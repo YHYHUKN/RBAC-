@@ -3,6 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
+  // GitHub Pages 项目站点部署在 /RBAC-/ 子路径下
+  base: '/RBAC-/',
   plugins: [vue()],
   resolve: {
     alias: {

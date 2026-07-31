@@ -1,6 +1,16 @@
 # RBAC 企业级权限管理系统
 
+> 🔗 **在线演示（静态版 · Mock 数据 · 无需后端）：https://yhyhukn.github.io/RBAC-/**
+
 基于 **Spring Boot 3 + Vue 3** 的全栈 RBAC（Role-Based Access Control，角色权限控制）中后台管理系统演示项目。前端采用**赛博朋克科幻主题**（暗紫 + 品红霓虹 / 玻璃拟态 / 动态网格背景）。
+
+## 在线演示
+
+前端通过 GitHub Pages 自动部署（`.github/workflows/deploy.yml`），以 `VITE_MOCK=true` 离线 Mock 模式构建为纯静态站点，**无需启动后端即可完整体验**全部界面（仪表盘、用户/角色/菜单/部门/字典/文件/日志、系统监控、定时任务、公告管理、个人中心）。
+
+🔗 **https://yhyhukn.github.io/RBAC-/**
+
+演示账号见下文「演示账号」一节。
 
 ## 技术栈
 
