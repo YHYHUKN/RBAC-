@@ -1,0 +1,378 @@
+/* =====================================================================
+   RBAC Admin · 赛博朋克科幻主题（暗紫 + 品红霓虹）
+   设计系统：配色 token / Element Plus 暗色覆写 / 玻璃拟态 / 辉光 / 动态背景
+   ===================================================================== */
+
+/* 科技感字体（在线时加载，离线自动回退到系统等宽/无衬线） */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+/* ---------- 1. 设计 Token ---------- */
+:root {
+  /* 背景层级 */
+  --bg-void: #06030f;
+  --bg-base: #0b0718;
+  --bg-deep: #0f0a22;
+  --bg-panel: rgba(26, 16, 48, 0.55);
+  --bg-panel-solid: #140d28;
+  --bg-elevated: rgba(38, 22, 66, 0.78);
+
+  /* 霓虹色 */
+  --neon-magenta: #ff2bd6;
+  --neon-magenta-soft: #ff6be8;
+  --neon-purple: #a855f7;
+  --neon-violet: #7c3aed;
+  --neon-cyan: #22e0e6;
+
+  /* 文本 */
+  --text-strong: #f3ecff;
+  --text-base: #cfc4ee;
+  --text-muted: #8c7fb8;
+
+  /* 描边 / 辉光 */
+  --border-neon: rgba(255, 43, 214, 0.38);
+  --border-purple: rgba(168, 85, 247, 0.30);
+  --glow-magenta: 0 0 12px rgba(255, 43, 214, 0.55), 0 0 28px rgba(255, 43, 214, 0.22);
+  --glow-purple: 0 0 12px rgba(168, 85, 247, 0.45);
+}
+
+/* ---------- 2. Element Plus 暗色覆写（置于 .dark 以覆盖官方变量） ---------- */
+html.dark {
+  --el-color-primary: #ff2bd6;
+  --el-color-primary-light-3: #d63bb0;
+  --el-color-primary-light-5: #a82e8a;
+  --el-color-primary-light-7: #6f1f5c;
+  --el-color-primary-light-8: #4a1540;
+  --el-color-primary-light-9: #2a0d2c;
+  --el-color-primary-dark-2: #ff5ce0;
+
+  --el-bg-color: transparent;
+  --el-bg-color-page: transparent;
+  --el-bg-color-overlay: rgba(20, 13, 40, 0.92);
+  --el-fill-color: rgba(168, 85, 247, 0.10);
+  --el-fill-color-light: rgba(168, 85, 247, 0.07);
+  --el-fill-color-lighter: rgba(168, 85, 247, 0.04);
+  --el-fill-color-blank: rgba(15, 10, 34, 0.55);
+
+  --el-text-color-primary: #f3ecff;
+  --el-text-color-regular: #cfc4ee;
+  --el-text-color-secondary: #a99fd6;
+  --el-text-color-placeholder: #7a6fa6;
+  --el-text-color-disabled: #5b5180;
+
+  --el-border-color: rgba(168, 85, 247, 0.28);
+  --el-border-color-light: rgba(168, 85, 247, 0.20);
+  --el-border-color-lighter: rgba(168, 85, 247, 0.14);
+  --el-border-color-hover: rgba(255, 43, 214, 0.55);
+
+  --el-mask-color: rgba(6, 3, 15, 0.72);
+  --el-box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- 3. 全局基础 ---------- */
+* { box-sizing: border-box; }
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Rajdhani', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  color: var(--text-base);
+  background: var(--bg-void);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.2px;
+}
+
+#app { position: relative; min-height: 100%; }
+
+h1, h2, h3, h4 {
+  font-family: 'Orbitron', 'Rajdhani', 'PingFang SC', sans-serif;
+  letter-spacing: 1px;
+  color: var(--text-strong);
+}
+
+/* ---------- 4. 动态科幻背景 ---------- */
+.cyber-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 88% -8%, rgba(255, 43, 214, 0.22), transparent 60%),
+    radial-gradient(820px 620px at 5% 105%, rgba(124, 58, 237, 0.26), transparent 60%),
+    radial-gradient(700px 500px at 50% 50%, rgba(34, 224, 230, 0.06), transparent 70%),
+    linear-gradient(160deg, #06030f 0%, #0b0718 45%, #0f0a22 100%);
+}
+/* 网格层 */
+.cyber-bg::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background-image:
+    linear-gradient(rgba(168, 85, 247, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.10) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+  animation: gridDrift 18s linear infinite;
+}
+/* 浮扫描线 */
+.cyber-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(255, 43, 214, 0.035) 0px, rgba(255, 43, 214, 0.035) 1px, transparent 2px, transparent 4px);
+  opacity: 0.5;
+  animation: scan 8s linear infinite;
+}
+@keyframes gridDrift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 46px 46px, 46px 46px; }
+}
+@keyframes scan {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cyber-bg::before, .cyber-bg::after { animation: none; }
+}
+
+/* ---------- 5. 滚动条 ---------- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: rgba(15, 10, 34, 0.6); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--neon-purple), var(--neon-magenta));
+  border-radius: 6px;
+  box-shadow: var(--glow-purple);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--neon-magenta); }
+
+/* ---------- 6. 通用工具类 ---------- */
+/* 玻璃面板 */
+.glass {
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--border-purple);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* 页面容器 */
+.page-container {
+  padding: 18px 20px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* 工具栏（标题 + 操作区） */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-purple);
+}
+.toolbar h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-strong);
+  text-shadow: var(--glow-magenta);
+}
+.toolbar h3::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  margin-right: 10px;
+  vertical-align: -2px;
+  background: linear-gradient(180deg, var(--neon-magenta), var(--neon-purple));
+  box-shadow: var(--glow-magenta);
+  border-radius: 2px;
+}
+
+/* 通用面板（用于卡片/区块） */
+.panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-purple);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* 霓虹标题 */
+.neon-title {
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  text-shadow: var(--glow-magenta);
+}
+
+/* 科技感角标（装饰） */
+.tech-corner {
+  position: relative;
+}
+.tech-corner::before,
+.tech-corner::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--neon-magenta);
+  border-style: solid;
+}
+.tech-corner::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.tech-corner::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+/* 数据卡（仪表盘统计） */
+.stat-card {
+  background: var(--bg-panel) !important;
+  border: 1px solid var(--border-neon) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--glow-purple), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(14px);
+}
+.stat-label { color: var(--text-muted) !important; letter-spacing: 1px; }
+.stat-value {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--neon-magenta-soft) !important;
+  text-shadow: var(--glow-magenta);
+}
+
+/* 分页间距 */
+.mt { margin-top: 16px; justify-content: flex-end; }
+
+/* ---------- 7. Element Plus 组件美化 ---------- */
+/* Card */
+.el-card {
+  background: var(--bg-panel) !important;
+  border: 1px solid var(--border-purple) !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+  color: var(--text-base);
+}
+.el-card__header { border-bottom: 1px solid var(--border-purple) !important; }
+
+/* Table */
+.el-table {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: rgba(38, 22, 66, 0.7);
+  --el-table-row-hover-bg-color: rgba(255, 43, 214, 0.10);
+  --el-table-border-color: rgba(168, 85, 247, 0.20);
+  --el-table-header-text-color: var(--neon-magenta-soft);
+  --el-table-text-color: var(--text-base);
+  background: transparent !important;
+  color: var(--text-base);
+}
+.el-table::before { display: none; }
+.el-table th.el-table__cell { background: rgba(38, 22, 66, 0.7) !important; }
+.el-table tr { background: transparent !important; }
+.el-table .el-table__cell { border-bottom: 1px solid rgba(168, 85, 247, 0.14) !important; }
+
+/* Button */
+.el-button {
+  border-radius: 9px;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+.el-button--primary {
+  background: linear-gradient(135deg, var(--neon-magenta), var(--neon-purple)) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: var(--glow-magenta);
+}
+.el-button--primary:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(255, 43, 214, 0.75); }
+.el-button:not(.el-button--primary):not(.el-button--danger) {
+  background: rgba(168, 85, 247, 0.10) !important;
+  border: 1px solid var(--border-purple) !important;
+  color: var(--text-strong) !important;
+}
+.el-button:not(.el-button--primary):not(.el-button--danger):hover {
+  border-color: var(--neon-magenta) !important;
+  color: #fff !important;
+  box-shadow: var(--glow-purple);
+}
+.el-button--danger { box-shadow: 0 0 10px rgba(244, 63, 94, 0.35); }
+
+/* Input */
+.el-input__wrapper,
+.el-textarea__inner {
+  background: rgba(15, 10, 34, 0.6) !important;
+  box-shadow: 0 0 0 1px var(--border-purple) inset !important;
+  border-radius: 9px !important;
+  color: var(--text-strong);
+}
+.el-input__wrapper.is-focus { box-shadow: 0 0 0 1px var(--neon-magenta) inset, var(--glow-purple) !important; }
+.el-input__inner { color: var(--text-strong); }
+.el-input__inner::placeholder { color: var(--text-muted); }
+
+/* Dialog */
+.el-dialog {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border-neon) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--glow-purple), 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(18px);
+}
+.el-dialog__title { color: var(--text-strong) !important; font-family: 'Orbitron', sans-serif; }
+.el-dialog__headerbtn:hover .el-dialog__close { color: var(--neon-magenta) !important; }
+
+/* Pagination */
+.el-pagination { color: var(--text-muted); }
+.el-pagination button, .el-pagination .el-pager li {
+  background: rgba(38, 22, 66, 0.5) !important;
+  border-radius: 7px !important;
+  color: var(--text-base) !important;
+}
+.el-pagination .el-pager li.is-active {
+  background: linear-gradient(135deg, var(--neon-magenta), var(--neon-purple)) !important;
+  color: #fff !important;
+  box-shadow: var(--glow-magenta);
+}
+
+/* Tag */
+.el-tag {
+  border-radius: 6px !important;
+  border: 1px solid var(--border-purple) !important;
+  background: rgba(168, 85, 247, 0.12) !important;
+}
+
+/* Dropdown / Select 弹出 */
+.el-popper.is-light, .el-select-dropdown, .el-dropdown-menu {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border-neon) !important;
+  backdrop-filter: blur(16px);
+}
+.el-dropdown-menu__item:hover, .el-select-dropdown__item.is-hovering {
+  background: rgba(255, 43, 214, 0.14) !important;
+  color: #fff !important;
+}
+
+/* Message / MessageBox */
+.el-message, .el-message-box {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border-neon) !important;
+  backdrop-filter: blur(16px);
+}
+.el-message-box__title, .el-message__content { color: var(--text-strong) !important; }
+
+/* 树形（角色权限） */
+.el-tree {
+  background: transparent !important;
+  color: var(--text-base);
+}
+.el-tree-node__content:hover { background: rgba(255, 43, 214, 0.10) !important; }
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background: var(--neon-magenta) !important;
+  border-color: var(--neon-magenta) !important;
+}
+.el-checkbox__inner { background: rgba(15, 10, 34, 0.6) !important; border-color: var(--border-purple) !important; }
+
+/* 上传 */
+.el-upload__text { color: var(--text-muted); }
